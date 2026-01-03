@@ -19,11 +19,11 @@ const TodoInput = () => {
       console.log(error.message);
     }
   }
-
+  
   return (
     <div className="flex flex-col items-center gap-6 mt-10">
       <h1 className="bg-gray-900 text-yellow-500 px-6 py-2 rounded shadow text-xl">
-        Gotham Todo
+        Todo List
       </h1>
 
       <form className="flex gap-2" onSubmit={onSubmitForm}>
