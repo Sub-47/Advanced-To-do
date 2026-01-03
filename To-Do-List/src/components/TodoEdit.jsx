@@ -7,7 +7,7 @@ function TodoEdit({ todo }) {
   const updateDescription = async () => {
     try {
       const body = { description };
-      const response = await fetch(`http://localhost:5001/todos/${todo.todo_id}`, {
+      const response = await fetch(`https://todo-backend-62g79xtpk-subhams-projects-96c6d44c.vercel.app/todos/${todo.todo_id}`, {
         method: 'PUT',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)

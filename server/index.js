@@ -2,16 +2,19 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 
-const port = 5001;
+const port = process.env.PORT || 5001;
 const pool = require("./db");
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: [
+    "http://localhost:5173",
+    "https://sub-47.github.io"
+  ],
+  credentials: true
 }));
 
 app.use(express.json());
-//----------ROUTES----------//
-//create  atodo
+
 app.post("/todos", async (req, res) => {
   try {
     const { description } = req.body;
@@ -22,18 +25,20 @@ app.post("/todos", async (req, res) => {
     res.json(newTodo.rows[0]);
   } catch (error) {
     console.log(error.message);
+    res.status(500).json({ error: error.message });
   }
 });
-//get all todo
+
 app.get("/todos", async (req, res) => {
   try {
     const allTodos = await pool.query("SELECT * FROM todo");
     res.json(allTodos.rows);
   } catch (error) {
     console.log(error.message);
+    res.status(500).json({ error: error.message });
   }
 });
-//get a todo
+
 app.get("/todos/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -41,9 +46,10 @@ app.get("/todos/:id", async (req, res) => {
     res.json(todo.rows[0]);
   } catch (error) {
     console.log(error.message);
+    res.status(500).json({ error: error.message });
   }
 });
-//update a todo
+
 app.put('/todos/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -57,24 +63,28 @@ app.put('/todos/:id', async (req, res) => {
     res.json('Todo was updated');
   } catch (error) {
     console.log(error.message);
+    res.status(500).json({ error: error.message });
   }
 });
-//delete a todo
-app.delete('/todos/:id' ,async (req,res)=>{
-    try {
-        const {id}=req.params;
-        const deleteTodo= await pool.query('DELETE FROM todo WHERE todo_id=$1',[id])
-        res.json('todo was deleted')
-    } catch (error) {
-        console.log(error.message)
-    }
-})
 
-app.listen(port, () => {
-  console.log(`server has started on ${port}`);
+app.delete('/todos/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query('DELETE FROM todo WHERE todo_id=$1', [id]);
+    res.json('todo was deleted');
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: error.message });
+  }
 });
 
-// Test database connection
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`server has started on ${port}`);
+  });
+}
+
+
 pool.query('SELECT NOW()', (err, res) => {
   if (err) {
     console.error('Database connection error:', err);
@@ -82,3 +92,5 @@ pool.query('SELECT NOW()', (err, res) => {
     console.log('Database connected successfully');
   }
 });
+
+module.exports = app;

@@ -6,7 +6,7 @@ const TodoList = () => {
 
   const deleteTodo = async (id) => {
     try {
-      await fetch(`http://localhost:5001/todos/${id}`, { method: 'DELETE' });
+      await fetch(`https://todo-backend-62g79xtpk-subhams-projects-96c6d44c.vercel.app/todos/${id}`, { method: 'DELETE' });
       setTodos(prev => prev.filter(todo => todo.todo_id !== id));
     } catch (error) {
       console.error(error.message)
@@ -15,7 +15,7 @@ const TodoList = () => {
 
   const getTodos = async () => {
     try {
-      const response = await fetch('http://localhost:5001/todos');
+      const response = await fetch(`https://todo-backend-62g79xtpk-subhams-projects-96c6d44c.vercel.app/todos`);
       const JSONdata = await response.json();
       setTodos(JSONdata);
     } catch (error) {

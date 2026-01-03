@@ -7,11 +7,11 @@ const TodoInput = () => {
     e.preventDefault();
     try {
       const body = { description };
-      const response = await fetch('http://localhost:5001/todos', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      });
+      const response = await fetch('https://todo-backend-62g79xtpk-subhams-projects-96c6d44c.vercel.app/todos', {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(body)
+});
       window.location = '/';
       console.log(await response.json());
       setDescription("");
