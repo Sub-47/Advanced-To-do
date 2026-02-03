@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? "https://todo-backend-fwik.onrender.com";
+
 const TodoInput = () => {
   const [description, setDescription] = useState("");
 
@@ -7,11 +9,11 @@ const TodoInput = () => {
     e.preventDefault();
     try {
       const body = { description };
-      const response = await fetch('https://todo-backend-62g79xtpk-subhams-projects-96c6d44c.vercel.app/todos', {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(body)
-});
+      const response = await fetch(`${API_BASE_URL}/todos`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
       window.location = '/';
       console.log(await response.json());
       setDescription("");

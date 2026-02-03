@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? "https://todo-backend-fwik.onrender.com";
+
 function TodoEdit({ todo }) {
   const [description, setDescription] = useState(todo.description);
   const [isOpen, setIsOpen] = useState(false);
@@ -7,7 +9,7 @@ function TodoEdit({ todo }) {
   const updateDescription = async () => {
     try {
       const body = { description };
-      const response = await fetch(`https://todo-backend-62g79xtpk-subhams-projects-96c6d44c.vercel.app/todos/${todo.todo_id}`, {
+      const response = await fetch(`${API_BASE_URL}/todos/${todo.todo_id}`, {
         method: 'PUT',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
