@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import TodoEdit from "./TodoEdit";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? "https://todo-backend-fwik.onrender.com";
+
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
 
   const deleteTodo = async (id) => {
     try {
-      await fetch(`https://todo-backend-62g79xtpk-subhams-projects-96c6d44c.vercel.app/todos/${id}`, { method: 'DELETE' });
+      await fetch(`${API_BASE_URL}/todos/${id}`, { method: 'DELETE' });
       setTodos(prev => prev.filter(todo => todo.todo_id !== id));
     } catch (error) {
       console.error(error.message)
@@ -15,7 +17,7 @@ const TodoList = () => {
 
   const getTodos = async () => {
     try {
-      const response = await fetch(`https://todo-backend-62g79xtpk-subhams-projects-96c6d44c.vercel.app/todos`);
+      const response = await fetch(`${API_BASE_URL}/todos`);
       const JSONdata = await response.json();
       setTodos(JSONdata);
     } catch (error) {
